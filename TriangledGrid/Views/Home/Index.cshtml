@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Grid with Triangles inside</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+
+    <script language="javascript" type="text/javascript">
+        function GetVertices() {
+            const triangleId = $("#triangleId").val();
+
+            var uri = "http://localhost:54854/api/values/GetVerticesForTriangle/" + triangleId;
+
+            console.log(uri);
+            $.getJSON(uri, function (result) { 
+                let items = [];
+                console.log('Successfully called ' + result);
+                $.each(result, function (key, value) {
+                    console.log("vertex: " + value.XPos + "  " + value.YPos);
+                    items.push("[" + value.XPos + ", " + value.YPos + "]");
+                });
+
+                $("#triangleVertices").html(items.join(", "));
+            }
+            ).fail(
+                function () {
+                    console.log('Exception:');
+                });
+        }
+
+        function GetTriangleId() {
+            const row = $("#triangleRow").val();
+            const column = $("#triangleColumn").val();
+            console.log("row,column:" + row + ":" + column);
+            const uri = "http://localhost:54854/api/values/PostTriangleIdFromRowColumn";
+            console.log(uri);
+
+            $.post(uri, { Row: row, Column: column },
+                function (returnData) {
+                    console.log(returnData);
+                    $("#triangleReturnedId").html(returnData);
+                }
+            ).fail(function () {
+                console.log("error failed");
+            });
+        }
+
+/**/</script>
+
+    <style>
+        body{padding: 10px}
+        h4 {
+            background-color: gray;
+            color: white;
+        }
+
+        input {
+            height: 25px;
+            max-width : 200px
+        }
+    </style>
+</head>
+<body>
+    <div class="body-content" style="padding:4px">
+        <p>For the Grid below, we would like to find the triangle vertices given its Index, e.g. E3</p>
+        <p>We also want to find out its Index, by using the vertices. </p>
+        <p><img id="gridImage" src="~/Images/Grid.jpg" height="200" width="300" /></p>
+        <div>
+
+            <h4><span>Find the vertices by using triangle id</span></h4>
+            <form>
+                <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="triangleId">Enter the triangle id: </label>
+                        <div class="col-sm-offset-2">
+                            <input type="text" class="form-control" id="triangleId" />
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="button" class="btn-primary" id="submitId" value="Submit" onclick="GetVertices();" />
+                        </div>
+                </div>
+            </form>
+            
+            <p>The vertics for triangle is: <span id="triangleVertices"></span></p>
+
+            <h4><span>Find the triangle id by using column and row</span></h4>
+            <form>
+                <div class="form-group row">
+                    <label for="triangleRow" class="col-sm-2 col-form-label">Enter Row Number: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="triangleRow" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="triangleColumn" class="col-sm-2 col-form-label">Enter Column Number: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="triangleColumn" />
+                    </div>
+                </div>
+                <input type="button" class="btn-primary" id="submitRowColumn" value="Submit" onclick="GetTriangleId();" />
+
+                <p>The ID for triangle is: <span id="triangleReturnedId"></span></p>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
