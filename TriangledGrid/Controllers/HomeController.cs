@@ -11,8 +11,7 @@ namespace TriangledGrid.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-            var allVertics = ValuesController.StaticGrid.GetVerticesForTriangle("d3");
-            var id = ValuesController.StaticGrid.GetTriangleIdFromRowColumn(4, 3);
+
             return View();
         }
     }

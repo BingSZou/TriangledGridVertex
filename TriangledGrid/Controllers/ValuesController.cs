@@ -10,8 +10,7 @@ namespace TriangledGrid.Controllers
 {
     public class ValuesController : ApiController
     {
-        public static SquareGridModel StaticGrid = new SquareGridModel(6, 6, 10);
-
+        public static SquareGridModel StaticGrid =>  SquareGridModel.SquareGridInstance;
         // GET api/values
         public IEnumerable<IEnumerable<Vertex>> Get()
         {

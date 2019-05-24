@@ -8,6 +8,18 @@ namespace TriangledGrid.Models
 {
     public class SquareGridModel
     {
+        // not sure using singleton is a good idea here, 
+        // as we want the grid to be any size, not limit to 6x6 grid. 
+        public static SquareGridModel SquareGridInstance
+        {
+            get
+            {
+                return _staticGrid ?? (_staticGrid = new SquareGridModel(6, 6, 10));
+            }
+        }
+
+        private static SquareGridModel _staticGrid = null;
+
         private List<List<Square>> _allSquares = null;
         public SquareGridModel(int numColumns, int numRows, int width)
         {
